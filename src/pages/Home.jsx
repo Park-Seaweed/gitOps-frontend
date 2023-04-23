@@ -9,7 +9,7 @@ const Home = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await axios.get("backend-svc.backend.svc.cluster.local:3000/articles");
+                const response = await axios.get("backend-svc:3000/articles");
                 setPosts(response.data);
             } catch (error) {
                 console.log(error);
