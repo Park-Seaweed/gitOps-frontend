@@ -11,7 +11,7 @@ const Article = () => {
         const fetchData = async () => {
             try {
                 const response = await axios.get(
-                    `http://k8s-eksdemogroup-44094b9d6c-2126869606.ap-northeast-2.elb.amazonaws.com/articels/${param.id}`
+                    `backend-svc.backend/articles/${param.id}`
                 );
                 setPost(response.data);
             } catch (error) {

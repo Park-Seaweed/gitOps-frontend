@@ -9,7 +9,7 @@ const Home = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await axios.get("http://k8s-eksdemogroup-44094b9d6c-2126869606.ap-northeast-2.elb.amazonaws.com/articels");
+                const response = await axios.get("backend-svc.backend/articles");
                 setPosts(response.data);
             } catch (error) {
                 console.log(error);
@@ -25,7 +25,7 @@ const Home = () => {
                     <table className="w-full">
                         <thead>
                             <tr className="bg-gray-200">
-                                <th className="p-2">글 제목</th>
+                                <th className="p-2">글 제목이당</th>
                             </tr>
                         </thead>
                         <tbody>

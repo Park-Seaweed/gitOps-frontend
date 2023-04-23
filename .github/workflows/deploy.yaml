@@ -50,34 +50,34 @@ jobs:
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
           echo "image=$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG" >> $GITHUB_OUTPUT
 
-      # - name: Setup Kustomize
-      #   uses: imranismail/setup-kustomize@v1
+      - name: Setup Kustomize
+        uses: imranismail/setup-kustomize@v1
 
-      # - name: Checkout kustomize repository
-      #   uses: actions/checkout@v2
-      #   with:
+      - name: Checkout kustomize repository
+        uses: actions/checkout@v2
+        with:
           
-      #     repository: Park-Seaweed/gitOps-config
-      #     ref: main
+          repository: Park-Seaweed/gitOps-config
+          ref: main
           
-      #     token: ${{ secrets.ACTION_TOKEN }}
-      #     path: gitOps-config
+          token: ${{ secrets.ACTION_TOKEN }}
+          path: gitOps-config
 
-      # - name: Update Kubernetes resources
-      #   env:
-      #     IMAGE_TAG: ${{ steps.extract_tag_name.outputs.version }}
-      #   run: |
-      #     pwd
-      #     cd gitOps-config/frontend/overlays/prd/
-      #     echo \${{ steps.login-ecr.outputs.registry }}/\${{ env.ECR_REPOSITORY }}
-      #     echo \${{ steps.login-ecr.outputs.registry }}/\${{ env.ECR_REPOSITORY }}:$IMAGE_TAG
-      #     kustomize edit set image \${{ steps.login-ecr.outputs.registry }}/\${{ env.ECR_REPOSITORY }}=\${{ steps.login-ecr.outputs.registry }}/\${{ env.ECR_REPOSITORY }}:$IMAGE_TAG
-      #     cat kustomization.yaml
+      - name: Update Kubernetes resources
+        env:
+          IMAGE_TAG: ${{ steps.extract_tag_name.outputs.version }}
+        run: |
+          pwd
+          cd gitOps-config/frontend/overlays/prd/
+          echo \${{ steps.login-ecr.outputs.registry }}/\${{ env.ECR_REPOSITORY }}
+          echo \${{ steps.login-ecr.outputs.registry }}/\${{ env.ECR_REPOSITORY }}:$IMAGE_TAG
+          kustomize edit set image \${{ steps.login-ecr.outputs.registry }}/\${{ env.ECR_REPOSITORY }}=\${{ steps.login-ecr.outputs.registry }}/\${{ env.ECR_REPOSITORY }}:$IMAGE_TAG
+          cat kustomization.yaml
       
-      # - name: Commit minifest files
-      #   run: |
-      #     cd gitOps-config
-      #     git config --global user.email "qkralsgur721@gmail.com"
-      #     git config --global user.name "Park-Seaweed"
-      #     git commit -am "Update image tag"
-      #     git push -u origin main
+      - name: Commit minifest files
+        run: |
+          cd gitOps-config
+          git config --global user.email "qkralsgur721@gmail.com"
+          git config --global user.name "Park-Seaweed"
+          git commit -am "Update image tag"
+          git push -u origin main
