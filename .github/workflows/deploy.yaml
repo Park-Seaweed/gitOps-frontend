@@ -1,0 +1,83 @@
+name: deploy
+
+on:
+  push:
+    tags:
+      - v*
+
+env:
+  AWS_REGION: ap-northeast-2
+  ECR_REPOSITORY: argocd-frontend
+
+jobs:
+  deploy:
+    name: Deploy
+    runs-on: ubuntu-20.04
+    outputs:
+      IMAGE_TAG: ${{ github.sha }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v1
+
+      - name: Extract tag name
+        id: extract_tag_name
+        run: echo "##[set-output name=version;]$(echo '${{ github.ref }}' | sed 's/refs\/tags\///')"
+
+      - name: Print Image Tag
+        run: echo "${{ steps.extract_tag_name.outputs.version }}"
+
+      - name: Build, tag, and push image to Amazon ECR
+        id: build-image
+        env:
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          
+          IMAGE_TAG: ${{ steps.extract_tag_name.outputs.version }}
+        
+        run: |
+          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
+          docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+          echo "image=$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG" >> $GITHUB_OUTPUT
+
+      # - name: Setup Kustomize
+      #   uses: imranismail/setup-kustomize@v1
+
+      # - name: Checkout kustomize repository
+      #   uses: actions/checkout@v2
+      #   with:
+          
+      #     repository: Park-Seaweed/gitOps-config
+      #     ref: main
+          
+      #     token: ${{ secrets.ACTION_TOKEN }}
+      #     path: gitOps-config
+
+      # - name: Update Kubernetes resources
+      #   env:
+      #     IMAGE_TAG: ${{ steps.extract_tag_name.outputs.version }}
+      #   run: |
+      #     pwd
+      #     cd gitOps-config/frontend/overlays/prd/
+      #     echo \${{ steps.login-ecr.outputs.registry }}/\${{ env.ECR_REPOSITORY }}
+      #     echo \${{ steps.login-ecr.outputs.registry }}/\${{ env.ECR_REPOSITORY }}:$IMAGE_TAG
+      #     kustomize edit set image \${{ steps.login-ecr.outputs.registry }}/\${{ env.ECR_REPOSITORY }}=\${{ steps.login-ecr.outputs.registry }}/\${{ env.ECR_REPOSITORY }}:$IMAGE_TAG
+      #     cat kustomization.yaml
+      
+      # - name: Commit minifest files
+      #   run: |
+      #     cd gitOps-config
+      #     git config --global user.email "qkralsgur721@gmail.com"
+      #     git config --global user.name "Park-Seaweed"
+      #     git commit -am "Update image tag"
+      #     git push -u origin main

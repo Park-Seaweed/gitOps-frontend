@@ -1,0 +1,39 @@
+{
+  "test": [
+    {
+      "id": 1,
+      "title": "json-server 편해",
+      "content": "굿"
+    },
+    {
+      "id": 2,
+      "title": "백엔드 만들기 귀찮을떈?",
+      "content": "json-server를 쓰면 된다"
+    },
+    {
+      "id": 3,
+      "title": "백엔드 만들기 귀찮을떈?",
+      "content": "json-server를 쓰면 된다"
+    },
+    {
+      "title": "ee",
+      "content": "eeee",
+      "id": 4
+    },
+    {
+      "title": "w32323",
+      "content": "242534523",
+      "id": 5
+    },
+    {
+      "title": "efe",
+      "content": "efefefef",
+      "id": 6
+    },
+    {
+      "title": "wefwefw11",
+      "content": "wefwefwefwef",
+      "id": 7
+    }
+  ]
+}
