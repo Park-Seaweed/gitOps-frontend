@@ -9,7 +9,7 @@ const Home = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await axios.get("backend-svc.baceknd:3000/articles");
+                const response = await axios.get("http://k8s-eksdemogroup-44094b9d6c-533340234.ap-northeast-2.elb.amazonaws.com/articles");
                 setPosts(response.data);
             } catch (error) {
                 console.log(error);
