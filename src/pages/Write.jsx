@@ -19,7 +19,7 @@ const Write = () => {
     const handlePost = async () => {
         try {
             await axios.post(
-                "backend-svc.backend:3000/articles",
+                "http://k8s-eksdemogroup-44094b9d6c-533340234.ap-northeast-2.elb.amazonaws.com/articles",
                 formData
             );
             navigate("/");
