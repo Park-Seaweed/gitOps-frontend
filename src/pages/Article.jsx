@@ -11,7 +11,7 @@ const Article = () => {
         const fetchData = async () => {
             try {
                 const response = await axios.get(
-                    `backend-svc:3000/articles/${param.id}`
+                    `backend-svc.backend:3000/articles/${param.id}`
                 );
                 setPost(response.data);
             } catch (error) {
